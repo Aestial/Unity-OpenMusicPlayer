@@ -43,7 +43,7 @@ namespace OpenMusicPlayer.Samples.HUD
         
         private void Awake()
         {
-            _player = FindObjectOfType<MusicPlayerCore>();
+            _player = FindFirstObjectByType<MusicPlayerCore>();
             
             // Add Custom Slider Interactive Controller
             _progressInteractController = progressSlider.gameObject.AddComponent<SliderInteractController>();
@@ -57,11 +57,22 @@ namespace OpenMusicPlayer.Samples.HUD
         {
             InitializeUI();
             SubscribeToEvents();
+            RenderUI();
         }
 
         private void OnDisable()
         {
             UnsubscribeFromEvents(); 
+        }
+        
+        public void RenderUI()
+        {
+            if (_player == null) return;
+           
+            HandleSongChanged(_player.CurrentTrack);
+            UpdateLoopVisual(_player.loop);
+            UpdateShuffleVisual(_player.shuffle);
+            UpdatePlayButtonVisual(_player.CurrentState == PlaybackState.Playing);
         }
 
         private void InitializeUI()

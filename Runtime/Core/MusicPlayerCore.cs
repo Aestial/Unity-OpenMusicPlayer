@@ -57,19 +57,19 @@ namespace OpenMusicPlayer.Core
         public event Action<MusicTrack> OnSongChanged;
         public event Action<float> OnVolumeChanged;
 
-        private MusicTrack CurrentTrack => 
+        public MusicTrack CurrentTrack => 
             (playlist.Count == 0 || _currentIndex >= _playOrder.Count) ? 
                 defaultTrack : 
                 playlist[_playOrder[_currentIndex]];
         
-        private void Awake()
+        protected virtual void Awake()
         {
             _audioSource = gameObject.AddComponent<AudioSource>();
             _audioSource.playOnAwake = false;
             _audioSource.loop = loop;
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             InitializePlaylist();
             SetVolume(volume);
@@ -86,7 +86,7 @@ namespace OpenMusicPlayer.Core
             }
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             HandlePlaybackProgress();
         }
@@ -301,7 +301,7 @@ namespace OpenMusicPlayer.Core
             }
         }
         
-        private void PlayCurrent()
+        public void PlayCurrent()
         {
             if (playlist.Count == 0 || _currentIndex >= _playOrder.Count)
             {
