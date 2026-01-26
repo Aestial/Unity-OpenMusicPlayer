@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenMusicPlayer.Utilities;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace OpenMusicPlayer.Core
 {
@@ -24,10 +25,11 @@ namespace OpenMusicPlayer.Core
         [Range(0f, 1f)] public float volume = 0.8f;
         
         [Header("Advanced Settings")]
-        [SerializeField] private MusicTrack defaultTrack;
+		[SerializeField] private AudioMixerGroup output;
         [SerializeField] private bool loopPlaylist = true;
         [SerializeField] private bool playOnStart;
         [SerializeField] private float volumeDelta;
+        [SerializeField] private MusicTrack defaultTrack;
         
         [Header("Sampling Settings")]
         [SerializeField] [Tooltip("Threshold in seconds")]  
@@ -67,6 +69,7 @@ namespace OpenMusicPlayer.Core
             _audioSource = gameObject.AddComponent<AudioSource>();
             _audioSource.playOnAwake = false;
             _audioSource.loop = loop;
+			_audioSource.outputAudioMixerGroup = output;
         }
 
         protected virtual void Start()
